@@ -7,16 +7,14 @@ Simple python scriupt to walk Amazon AWS Status RSS feeds and report any new pos
 
 import pickle
 import textwrap
-from datetime import timedelta
-from datetime import datetime
-now = datetime.now()
+import sys
 
 try:
     import feedparser
 except:
     # Most common install issue
     print 'ERROR: You need to install the python feedparser library.'
-
+    sys.exit(2)
 
 # List of URLs you're interested in.
 # More can be found here: http://status.aws.amazon.com/
@@ -38,7 +36,6 @@ for url in rssurls:
         lastdata = pickle.load(input)
     except:
         lastdata=feedparser.parse(None)
-        
 
     # Compare freshdata to lastdata:
     for entry in freshdata.entries:
@@ -56,5 +53,3 @@ for url in rssurls:
     output = open(picklefile, 'wb')
     pickle.dump(freshdata, output)
     output.close()
-
-
